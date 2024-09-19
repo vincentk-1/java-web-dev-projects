@@ -11,12 +11,14 @@ public class MenuItem {
     private String category;
     private final LocalDate dateAdded;
 
-    public MenuItem(String category, double price, String description, String name) {
+    public MenuItem(String name, String description, double price, String category) {
         this.category = category;
         this.price = price;
         this.description = description;
         this.name = name;
         this.dateAdded = LocalDate.now();
+        // Test isNew() to be false
+       // this.dateAdded = LocalDate.parse("2018-07-23");
     }
 
     public String getName() {
@@ -53,6 +55,36 @@ public class MenuItem {
 
     public LocalDate getDateAdded() {
         return dateAdded;
+    }
+
+    // Custom toString() method
+    // Format name, description, price and conditional "NEW"
+    @Override
+    public String toString() {
+        String newText = isNew() ? " - NEW!" : "";
+        return name + newText + "\n" + description + " | $" + price;
+    }
+
+    // Custom equals to method
+    public boolean equals(Object toBeCompared){
+         if (this == toBeCompared) {
+             return true;
+         }
+         if(toBeCompared ==null) {
+             return false;
+         }
+         if(getClass() != toBeCompared.getClass()){
+             return false;
+         }
+         MenuItem otherItem = (MenuItem) toBeCompared;
+
+         return this.name.equals(otherItem.getName());
+    }
+
+    boolean isNew() {
+        LocalDate today = LocalDate.now();
+        double daysBetween = getDateAdded().until(today,ChronoUnit.DAYS);
+        return daysBetween < 90;
     }
 
 }
